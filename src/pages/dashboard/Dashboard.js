@@ -11,7 +11,8 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchEmployees = async () => {
       try {
-        const response = await fetch("http://localhost:8080/api/employees");
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/api/employees`
+);
         const data = await response.json();
         setEmployees(data);
       } catch (error) {
@@ -25,10 +26,10 @@ const Dashboard = () => {
     const confirmDelete = window.confirm("Kya aap sach mein delete karna chahte hain?");
     if (!confirmDelete) return;
     try {
-      await fetch(`http://localhost:8080/api/employee/${id}`, {
+      await fetch(`${process.env.REACT_APP_API_URL}/api/employee/${id}`, {
         method: "DELETE",
       });
-      const response = await fetch("http://localhost:8080/api/employees");
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/employees`);
       const data = await response.json();
       setEmployees(data);
     } catch (error) {

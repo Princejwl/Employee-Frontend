@@ -22,7 +22,7 @@ const PostUser = () =>{
         event.preventDefault();
         console.log(formdata);
         try{
-            const response = await fetch("http://localhost:8080/api/employee",{
+            const response = await fetch(`${process.env.REACT_APP_API_URL}/api/employee`,{
                 method:"POST",
                 headers:{
                     "Content-Type":"application/json"
