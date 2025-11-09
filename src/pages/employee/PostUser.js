@@ -3,6 +3,10 @@ import Form from "react-bootstrap/Form";
 import  Button  from "react-bootstrap/Button";
 import React, { useState } from 'react';
 import { useNavigate } from "react-router-dom";
+import { getUid } from "../../utils/auth";
+import { auth } from "../../firebaseConfig";
+import { getIdToken } from "firebase/auth";
+
 
 const PostUser = () =>{
 
@@ -18,26 +22,46 @@ const PostUser = () =>{
         setFormdata({...formdata,[name]:value});
     }
  const navigate = useNavigate();
-    const handleSubmit = async (event) =>{
-        event.preventDefault();
-        console.log(formdata);
-        try{
-            const response = await fetch(`${process.env.REACT_APP_API_URL}/api/employee`,{
-                method:"POST",
-                headers:{
-                    "Content-Type":"application/json"
-                },
-                body:JSON.stringify(formdata)
-            });
-            const data = await response.json();
-            console.log("Success:",data);
-            alert("Employee added successfully");
-            navigate("/");
-        }catch(error){
-            console.log("error creating employee",error.message);
-        }
+   const handleSubmit = async (event) => {
+  event.preventDefault();
+  console.log(formdata);
+
+  try {
+    // 🔹 Get the current logged-in Firebase user
+    const user = auth.currentUser;
+
+    if (!user) {
+      alert("Please log in first to add an employee.");
+      return;
     }
 
+    // 🔹 Get the user's UID (and token if needed)
+    const uid = user.uid;
+    const token = await getIdToken(user); // optional if backend verifies Firebase token
+
+    // 🔹 Add userId to your form data before sending
+    const employeeData = { ...formdata, userId: uid };
+
+    // 🔹 Send the request to your Spring Boot backend
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/api/employee`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}` // optional if backend verifies Firebase token
+      },
+      body: JSON.stringify(employeeData)
+    });
+
+    const data = await response.json();
+    console.log("Success:", data);
+
+    alert("Employee added successfully!");
+    navigate("/");
+  } catch (error) {
+    console.error("Error creating employee:", error.message);
+    alert("Something went wrong while adding employee.");
+  }
+};
     return(
         <>
         <div className="center-form">
