@@ -58,7 +58,7 @@ const PostUser = () =>{
                  type="email"
                  name ="email"
                   placeholder="Enter Email"
-                  value={formdata. email}
+                  value={formdata.email}
                   onChange={handleInputChange}
                    />
                </Form.Group>
@@ -67,7 +67,7 @@ const PostUser = () =>{
                  type="text"
                  name ="phone"
                   placeholder="Enter Phone"
-                  value={formdata. phone}
+                  value={formdata.phone}
                   onChange={handleInputChange}
                    />
                </Form.Group>
@@ -77,7 +77,7 @@ const PostUser = () =>{
                  type="text"
                  name ="department"
                   placeholder="Enter Department"
-                  value={formdata. department}
+                  value={formdata.department}
                   onChange={handleInputChange}
                    />
                </Form.Group>

@@ -17,7 +17,7 @@ const UpdateUser = () => {
 
     const handleInputChange = (event) => {
         const { name,value } = event.target;
-        setFormdata({ ...formdata, [name]: value });
+        setFormdata({ ...formdata,[name]: value });
     };
 
     useEffect(() => {
@@ -74,7 +74,7 @@ const UpdateUser = () => {
                  type="email"
                  name ="email"
                   placeholder="Enter Email"
-                  value={formdata. email}
+                  value={formdata.email}
                   onChange={handleInputChange}
                    />
                </Form.Group>
@@ -83,7 +83,7 @@ const UpdateUser = () => {
                  type="text"
                  name ="phone"
                   placeholder="Enter Phone"
-                  value={formdata. phone}
+                  value={formdata.phone}
                   onChange={handleInputChange}
                    />
                </Form.Group>
@@ -93,7 +93,7 @@ const UpdateUser = () => {
                  type="text"
                  name ="department"
                   placeholder="Enter Department"
-                  value={formdata. department}
+                  value={formdata.department}
                   onChange={handleInputChange}
                    />
                </Form.Group>
