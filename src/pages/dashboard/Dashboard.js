@@ -7,13 +7,14 @@ import { getUid } from "../../utils/auth"; // Firebase UID
 const Dashboard = () => {
   const [employees, setEmployees] = useState([]);
   const [search, setSearch] = useState("");
+  const [loading, setLoading] = useState(true); // ✅ spinner state added
   const navigate = useNavigate();
 
   // ✅ Fetch employees for logged-in user
   useEffect(() => {
     const fetchEmployees = async () => {
       try {
-        const uid = getUid(); // get current logged-in user's UID
+        const uid = getUid();
 
         if (!uid) {
           console.warn("⚠️ No user logged in — redirecting...");
@@ -21,12 +22,12 @@ const Dashboard = () => {
           return;
         }
 
-        // ✅ fetch only this user's employees from backend
+        setLoading(true); // ⬅️ Start loader before API call
+
         const response = await fetch(
           `${process.env.REACT_APP_API_URL}/api/employee/user/${uid}`
         );
 
-        // ✅ Handle non-OK responses safely
         if (!response.ok) {
           console.error("Backend error:", response.status);
           setEmployees([]);
@@ -34,17 +35,12 @@ const Dashboard = () => {
         }
 
         const data = await response.json();
-
-        // ✅ Ensure the data is an array
-        if (Array.isArray(data)) {
-          setEmployees(data);
-        } else {
-          console.warn("⚠️ Unexpected data format:", data);
-          setEmployees([]);
-        }
+        setEmployees(Array.isArray(data) ? data : []);
       } catch (error) {
         console.error("Error fetching employees:", error);
-        setEmployees([]); // Prevent crash
+        setEmployees([]);
+      } finally {
+        setLoading(false); // ⬅️ Stop loader after API call
       }
     };
 
@@ -61,7 +57,6 @@ const Dashboard = () => {
         method: "DELETE",
       });
 
-      // ✅ Re-fetch updated employee list
       const uid = getUid();
       const response = await fetch(
         `${process.env.REACT_APP_API_URL}/api/employee/user/${uid}`
@@ -79,16 +74,12 @@ const Dashboard = () => {
   };
 
   // ✅ Filter employees safely
-  const filteredEmployees = Array.isArray(employees)
-    ? employees.filter(
-        (emp) =>
-          emp.name?.toLowerCase().includes(search.toLowerCase()) ||
-          emp.email?.toLowerCase().includes(search.toLowerCase()) ||
-          emp.department?.toLowerCase().includes(search.toLowerCase())
-      )
-    : [];
+  const filteredEmployees = employees.filter((emp) =>
+    emp.name?.toLowerCase().includes(search.toLowerCase()) ||
+    emp.email?.toLowerCase().includes(search.toLowerCase()) ||
+    emp.department?.toLowerCase().includes(search.toLowerCase())
+  );
 
-  // ✅ UI Part
   return (
     <Container className="mt-5">
       <Card className="shadow-lg border-0 p-4">
@@ -130,7 +121,19 @@ const Dashboard = () => {
               </thead>
 
               <tbody>
-                {filteredEmployees.length > 0 ? (
+                {loading ? (
+                  // 🌀 LOADING SPINNER HERE
+                  <tr>
+                    <td colSpan="5" className="text-center py-5">
+                      <div className="spinner-border text-primary" role="status">
+                        <span className="visually-hidden">Loading...</span>
+                      </div>
+                      <div className="mt-2 fw-bold text-primary">
+                        Loading Employees...
+                      </div>
+                    </td>
+                  </tr>
+                ) : filteredEmployees.length > 0 ? (
                   filteredEmployees.map((employee) => (
                     <tr key={employee.id}>
                       <td>{employee.name}</td>
