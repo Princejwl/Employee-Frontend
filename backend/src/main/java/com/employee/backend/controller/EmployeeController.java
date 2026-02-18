@@ -22,21 +22,21 @@ public class EmployeeController {
         this.employeeRepository = employeeRepository;
     }
 
-    // ✅ POST - Create new employee
+    // POST - Create new employee
     @PostMapping
     public ResponseEntity<Employee> createEmployee(@RequestBody Employee employee) {
         Employee savedEmployee = employeeRepository.save(employee);
         return new ResponseEntity<>(savedEmployee, HttpStatus.CREATED);
     }
 
-    // ✅ GET - Get all employees
+    // GET - Get all employees
     @GetMapping
     public ResponseEntity<List<Employee>> getAllEmployees() {
         List<Employee> employees = employeeRepository.findAll();
         return new ResponseEntity<>(employees, HttpStatus.OK);
     }
 
-    // ✅ GET - Get employee by ID
+    // GET - Get employee by ID
     @GetMapping("/{id}")
     public ResponseEntity<Employee> getEmployeeById(@PathVariable Long id) {
         Optional<Employee> employee = employeeRepository.findById(id);
@@ -44,14 +44,19 @@ public class EmployeeController {
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    // ✅ GET - Get employees by Firebase userId
+    // GET - Get employees by Firebase userId
     @GetMapping("/user/{userId}")
-    public ResponseEntity<List<Employee>> getEmployeesByUserId(@PathVariable String userId) {
-        List<Employee> employees = employeeRepository.findByUserId(userId);
-        return new ResponseEntity<>(employees, HttpStatus.OK);
+    public ResponseEntity<?> getEmployeesByUserId(@PathVariable String userId) {
+        try {
+            List<Employee> employees = employeeRepository.findByUserId(userId);
+            return new ResponseEntity<>(employees, HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>("Error: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
-    // ✅ PUT - Update employee
+    // PUT - Update employee
     @PutMapping("/{id}")
     public ResponseEntity<Employee> updateEmployee(@PathVariable Long id, @RequestBody Employee employeeDetails) {
         Optional<Employee> optionalEmployee = employeeRepository.findById(id);
@@ -70,7 +75,7 @@ public class EmployeeController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    // ✅ DELETE - Delete employee
+    // DELETE - Delete employee
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteEmployee(@PathVariable Long id) {
         if (employeeRepository.existsById(id)) {
