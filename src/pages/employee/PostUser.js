@@ -5,6 +5,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { auth } from "../../firebaseConfig";
 import { getIdToken } from "firebase/auth";
+import Toast from "../../components/Toast";
 
 const PostUser = () => {
   const [formdata, setFormdata] = useState({
@@ -13,7 +14,7 @@ const PostUser = () => {
     phone: "",
     department: ""
   });
-
+  const [toast, setToast] = useState(null);
   const navigate = useNavigate();
 
   const handleInputChange = (event) => {
@@ -23,25 +24,19 @@ const PostUser = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log(formdata);
 
     try {
-      // 🔹 Get the current logged-in Firebase user
       const user = auth.currentUser;
 
       if (!user) {
-        alert("Please log in first to add an employee.");
+        setToast({ message: "Please log in first to add an employee.", type: "warning" });
         return;
       }
 
-      // 🔹 Get user's UID and ID token
       const uid = user.uid;
       const token = await getIdToken(user);
-
-      // 🔹 Prepare data
       const employeeData = { ...formdata, userId: uid };
 
-      // 🔹 Send request to backend
       const response = await fetch(`${process.env.REACT_APP_API_URL}/api/employee`, {
         method: "POST",
         headers: {
@@ -54,16 +49,24 @@ const PostUser = () => {
       const data = await response.json();
       console.log("Success:", data);
 
-      alert("Employee added successfully!");
-      navigate("/");
+      setToast({ message: "Employee added successfully!", type: "success" });
+      setTimeout(() => navigate("/"), 1500);
     } catch (error) {
       console.error("Error creating employee:", error.message);
-      alert("Something went wrong while adding employee.");
+      setToast({ message: "Something went wrong while adding employee.", type: "error" });
     }
   };
 
   return (
     <div className="center-form">
+      {toast && (
+        <Toast
+          message={toast.message}
+          type={toast.type}
+          onClose={() => setToast(null)}
+        />
+      )}
+
       <h1>Post New Employee</h1>
       <form onSubmit={handleSubmit}>
         <Form.Group className="mb-3">

@@ -2,78 +2,71 @@ import React, { useState, useEffect } from "react";
 import { Container, Row, Col, Table, Button, Form, Card } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import "./Dashboard.css";
-import { getUid } from "../../utils/auth"; // Firebase UID
+import { getUid } from "../../utils/auth";
+import ConfirmModal from "../../components/ConfirmModal";
+import Toast from "../../components/Toast";
 
 const Dashboard = () => {
   const [employees, setEmployees] = useState([]);
   const [search, setSearch] = useState("");
-  const [loading, setLoading] = useState(true); // ✅ spinner state added
+  const [loading, setLoading] = useState(true);
+  const [deleteId, setDeleteId] = useState(null);
+  const [toast, setToast] = useState(null);
   const navigate = useNavigate();
 
-  // ✅ Fetch employees for logged-in user
   useEffect(() => {
     const fetchEmployees = async () => {
       try {
         const uid = getUid();
-
         if (!uid) {
-          console.warn("⚠️ No user logged in — redirecting...");
           navigate("/login");
           return;
         }
-
-        setLoading(true); // ⬅️ Start loader before API call
-
+        setLoading(true);
         const response = await fetch(
           `${process.env.REACT_APP_API_URL}/api/employee/user/${uid}`
         );
-
         if (!response.ok) {
-          console.error("Backend error:", response.status);
           setEmployees([]);
           return;
         }
-
         const data = await response.json();
         setEmployees(Array.isArray(data) ? data : []);
       } catch (error) {
         console.error("Error fetching employees:", error);
         setEmployees([]);
       } finally {
-        setLoading(false); // ⬅️ Stop loader after API call
+        setLoading(false);
       }
     };
-
     fetchEmployees();
   }, [navigate]);
 
-  // ✅ Delete employee
-  const handleDelete = async (id) => {
-    const confirmDelete = window.confirm("Kya aap sach mein delete karna chahte hain?");
-    if (!confirmDelete) return;
-
+  const handleDelete = async () => {
+    if (!deleteId) return;
     try {
-      await fetch(`${process.env.REACT_APP_API_URL}/api/employee/${id}`, {
+      await fetch(`${process.env.REACT_APP_API_URL}/api/employee/${deleteId}`, {
         method: "DELETE",
       });
-
       const uid = getUid();
       const response = await fetch(
         `${process.env.REACT_APP_API_URL}/api/employee/user/${uid}`
       );
       const data = await response.json();
       setEmployees(Array.isArray(data) ? data : []);
+      setToast({ message: "Employee deleted successfully!", type: "success" });
     } catch (error) {
       console.error("Error deleting employee:", error);
+      setToast({ message: "Failed to delete employee.", type: "error" });
+    } finally {
+      setDeleteId(null);
     }
   };
 
-  // ✅ Update employee
   const handleUpdate = (id) => {
     navigate(`/employee/${id}`);
   };
 
-  // ✅ Filter employees safely
   const filteredEmployees = employees.filter((emp) =>
     emp.name?.toLowerCase().includes(search.toLowerCase()) ||
     emp.email?.toLowerCase().includes(search.toLowerCase()) ||
@@ -82,6 +75,22 @@ const Dashboard = () => {
 
   return (
     <Container className="mt-5">
+      {toast && (
+        <Toast
+          message={toast.message}
+          type={toast.type}
+          onClose={() => setToast(null)}
+        />
+      )}
+
+      {deleteId && (
+        <ConfirmModal
+          message="This employee will be permanently deleted. This action cannot be undone."
+          onConfirm={handleDelete}
+          onCancel={() => setDeleteId(null)}
+        />
+      )}
+
       <Card className="shadow-lg border-0 p-4">
         <Row className="mb-3">
           <Col>
@@ -122,7 +131,6 @@ const Dashboard = () => {
 
               <tbody>
                 {loading ? (
-                  // 🌀 LOADING SPINNER HERE
                   <tr>
                     <td colSpan="5" className="text-center py-5">
                       <div className="spinner-border text-primary" role="status">
@@ -152,7 +160,7 @@ const Dashboard = () => {
                         <Button
                           variant="outline-danger"
                           size="sm"
-                          onClick={() => handleDelete(employee.id)}
+                          onClick={() => setDeleteId(employee.id)}
                         >
                           🗑 Delete
                         </Button>

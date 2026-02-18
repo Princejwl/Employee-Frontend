@@ -1,9 +1,19 @@
-/* 📱 Mobile-First Responsive Adjustments */
+/* ============================================
+   APP-LEVEL — Responsive Overrides (Dark Theme)
+   ============================================ */
+
+/* Global smooth transitions */
+*,
+*::before,
+*::after {
+  transition-property: background-color, border-color, color, box-shadow, transform, opacity;
+  transition-duration: 0.2s;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* 📱 Mobile-First Responsive */
 @media (max-width: 768px) {
-  /* 🔹 Navbar adjustments */
   .custom-navbar {
-    flex-direction: column;
-    align-items: flex-start;
     padding: 10px 15px;
   }
 
@@ -23,27 +33,25 @@
   .nav-btn {
     width: 100%;
     text-align: center;
-    margin: 5px 0;
+    margin: 4px 0;
     padding: 10px;
   }
 
-  /* 🔹 Center content */
   .page-container {
     padding: 10px;
   }
 
-  /* 🔹 Forms */
-  form, .update-form {
+  form,
+  .update-form {
     width: 100%;
-    padding: 20px;
+    padding: 24px;
   }
 
   .form-control {
-    font-size: 14px;
-    padding: 10px;
+    font-size: 14px !important;
+    padding: 10px !important;
   }
 
-  /* 🔹 Tables in Dashboard */
   table {
     width: 100%;
     border-collapse: collapse;
@@ -52,38 +60,26 @@
     white-space: nowrap;
   }
 
-  th, td {
-    font-size: 14px;
-    padding: 8px;
-  }
-
-  /* 🔹 Dashboard card */
-  .dashboard-card {
-    width: 100%;
-    overflow-x: auto;
-    padding: 15px;
-  }
-
-  /* 🔹 Search input */
-  .search-bar {
-    width: 100%;
-    font-size: 14px;
+  th,
+  td {
+    font-size: 13px !important;
+    padding: 8px !important;
   }
 }
 
-/* 📱 Very small screens (under 480px) */
+/* 📱 Very small screens */
 @media (max-width: 480px) {
-  .center-form h1,
-  .dashboard-title {
-    font-size: 22px;
+  .center-form h1 {
+    font-size: 22px !important;
   }
 
   .nav-btn {
-    font-size: 14px;
+    font-size: 13px;
   }
 
-  .btn-primary {
-    font-size: 14px;
-    padding: 10px;
+  .btn-primary,
+  .btn {
+    font-size: 14px !important;
+    padding: 10px !important;
   }
 }

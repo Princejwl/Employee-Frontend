@@ -1,83 +1,123 @@
-/* 🌈 Background section */
+/* ============================================
+   POST EMPLOYEE — Dark Glassmorphism Form
+   ============================================ */
+
 .center-form {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 90vh;
-  background: linear-gradient(180deg, #f8fbff, #e6f0ff);
-  font-family: "Poppins", sans-serif;
+  min-height: calc(100vh - 60px);
+  background: var(--bg-primary) !important;
+  font-family: 'Inter', sans-serif;
+  padding: 40px 20px;
+  animation: formFadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* 🧾 Form card styling */
+@keyframes formFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Heading */
+.center-form h1 {
+  font-size: 28px;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 28px;
+  letter-spacing: -0.5px;
+  background: linear-gradient(135deg, var(--accent-light), var(--accent-secondary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Form card — FORCE dark background */
 .center-form form {
   width: 100%;
-  max-width: 420px;
-  background: #ffffff;
-  border-radius: 16px;
-  padding: 32px 28px;
-  box-shadow: 0 10px 30px rgba(0, 123, 255, 0.15);
+  max-width: 440px;
+  background: rgba(26, 26, 46, 0.85) !important;
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-radius: var(--radius-xl);
+  padding: 40px 32px;
+  border: 1px solid var(--border-color) !important;
+  box-shadow: var(--shadow-lg);
   transition: all 0.3s ease;
-  border: 1px solid rgba(0, 123, 255, 0.05);
 }
 
-/* Lift effect on hover */
 .center-form form:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 12px 35px rgba(0, 123, 255, 0.25);
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg), var(--shadow-glow);
+  border-color: rgba(108, 99, 255, 0.15) !important;
 }
 
-/* ✨ Heading */
-.center-form h1 {
-  font-size: 26px;
-  font-weight: 600;
-  color: #1b1b1b;
-  text-align: center;
-  margin-bottom: 25px;
-  letter-spacing: 0.5px;
-}
-
-/* 🔠 Input fields */
+/* Input fields */
 .center-form .form-control {
-  border-radius: 10px;
-  border: 1px solid #d4d8f0;
-  padding: 12px 14px;
-  font-size: 15px;
-  transition: all 0.3s ease;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  background: rgba(255, 255, 255, 0.04) !important;
+  border: 1px solid var(--border-color) !important;
+  border-radius: var(--radius-md) !important;
+  padding: 13px 16px !important;
+  font-size: 15px !important;
+  font-family: 'Inter', sans-serif !important;
+  color: var(--text-primary) !important;
+  transition: all 0.3s ease !important;
 }
 
-/* Input focus */
+.center-form .form-control::placeholder {
+  color: var(--text-muted) !important;
+}
+
 .center-form .form-control:focus {
-  border-color: #007bff;
-  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.15);
-  outline: none;
+  border-color: var(--accent) !important;
+  box-shadow: 0 0 0 3px var(--accent-glow) !important;
+  background: rgba(255, 255, 255, 0.06) !important;
+  outline: none !important;
 }
 
-/* 🧊 Submit button */
+/* Submit button */
 .center-form .btn {
-  background: linear-gradient(135deg, #007bff, #00b4d8);
-  color: #fff;
-  font-weight: 600;
-  border: none;
-  border-radius: 10px;
+  background: linear-gradient(135deg, var(--accent), var(--accent-light)) !important;
+  color: #fff !important;
+  font-weight: 600 !important;
+  border: none !important;
+  border-radius: var(--radius-md) !important;
   width: 100%;
-  padding: 12px 18px;
-  margin-top: 8px;
-  transition: all 0.3s ease;
-  box-shadow: 0 5px 12px rgba(0, 123, 255, 0.3);
+  padding: 14px 18px !important;
+  margin-top: 12px;
+  transition: all 0.3s ease !important;
+  box-shadow: 0 6px 20px var(--accent-glow) !important;
   letter-spacing: 0.3px;
+  font-size: 15px !important;
+  position: relative;
+  overflow: hidden;
 }
 
-/* Hover animation */
 .center-form .btn:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 18px rgba(0, 123, 255, 0.4);
-  background: linear-gradient(135deg, #00b4d8, #0077b6);
+  transform: translateY(-2px) !important;
+  box-shadow: 0 8px 30px var(--accent-glow) !important;
+  filter: brightness(1.1);
 }
 
-/* Active click effect */
 .center-form .btn:active {
-  transform: translateY(0px);
-  box-shadow: 0 3px 8px rgba(0, 123, 255, 0.25);
+  transform: translateY(0) !important;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .center-form form {
+    padding: 28px 20px;
+    margin: 0 10px;
+  }
+
+  .center-form h1 {
+    font-size: 24px;
+  }
 }

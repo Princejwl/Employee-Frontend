@@ -1,93 +1,123 @@
-/* 🌈 Background matches global app style */
+/* ============================================
+   UPDATE EMPLOYEE — Dark Glassmorphism Form
+   ============================================ */
+
 .center-form {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 90vh;
-  background: linear-gradient(180deg, #f0f7ff 0%, #e3eeff 50%, #d6e8ff 100%);
-  font-family: "Poppins", sans-serif;
-  transition: background 0.5s ease;
+  min-height: calc(100vh - 60px);
+  background: var(--bg-primary) !important;
+  font-family: 'Inter', sans-serif;
+  padding: 40px 20px;
+  animation: editFadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* 🧾 Form card */
-.update-form {
-  position: relative;
-  width: 100%;
-  max-width: 420px;
-  background: rgba(255, 255, 255, 0.95);
-  border-radius: 16px;
-  padding: 35px 28px;
-  border: 1px solid rgba(0, 123, 255, 0.05);
-  box-shadow: 0 10px 30px rgba(0, 123, 255, 0.15);
-  transition: all 0.3s ease;
-  backdrop-filter: blur(5px);
+@keyframes editFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-/* 🧭 Card hover lift effect */
-.update-form:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 35px rgba(0, 123, 255, 0.25);
-}
-
-/* 🧠 Title */
+/* Heading */
 .center-form h1 {
   font-size: 28px;
-  font-weight: 600;
-  color: #1b1b1b;
+  font-weight: 700;
   text-align: center;
-  margin-bottom: 25px;
-  letter-spacing: 0.4px;
+  margin-bottom: 28px;
+  letter-spacing: -0.5px;
+  background: linear-gradient(135deg, var(--accent-secondary), var(--accent-light));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
-/* 🔠 Input fields */
-.update-form .form-control {
-  border-radius: 10px;
-  border: 1px solid #d4d8f0;
-  padding: 12px 14px;
-  font-size: 15px;
-  background: #fdfdff;
-  transition: all 0.3s ease;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-}
-
-/* 🔷 Focus glow */
-.update-form .form-control:focus {
-  border-color: #007bff;
-  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.15);
-  outline: none;
-  background: #ffffff;
-}
-
-/* 💡 Update button styling */
-.update-form .btn {
-  background: linear-gradient(135deg, #28a745, #20c997);
-  color: #fff;
-  font-weight: 600;
-  border: none;
-  border-radius: 10px;
+/* Form card — FORCE dark background */
+.update-form {
   width: 100%;
-  padding: 12px 18px;
-  margin-top: 10px;
+  max-width: 440px;
+  background: rgba(26, 26, 46, 0.85) !important;
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-radius: var(--radius-xl);
+  padding: 40px 32px;
+  border: 1px solid var(--border-color) !important;
+  box-shadow: var(--shadow-lg);
   transition: all 0.3s ease;
-  box-shadow: 0 6px 14px rgba(40, 167, 69, 0.3);
-  letter-spacing: 0.4px;
 }
 
-/* 💫 Button hover effect */
+.update-form:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg), 0 0 40px var(--accent-secondary-glow);
+  border-color: rgba(0, 212, 170, 0.15) !important;
+}
+
+/* Input fields */
+.update-form .form-control {
+  background: rgba(255, 255, 255, 0.04) !important;
+  border: 1px solid var(--border-color) !important;
+  border-radius: var(--radius-md) !important;
+  padding: 13px 16px !important;
+  font-size: 15px !important;
+  font-family: 'Inter', sans-serif !important;
+  color: var(--text-primary) !important;
+  transition: all 0.3s ease !important;
+}
+
+.update-form .form-control::placeholder {
+  color: var(--text-muted) !important;
+}
+
+.update-form .form-control:focus {
+  border-color: var(--accent-secondary) !important;
+  box-shadow: 0 0 0 3px var(--accent-secondary-glow) !important;
+  background: rgba(255, 255, 255, 0.06) !important;
+  outline: none !important;
+}
+
+/* Update button — green/teal accent */
+.update-form .btn {
+  background: linear-gradient(135deg, var(--accent-secondary), #00b894) !important;
+  color: #fff !important;
+  font-weight: 600 !important;
+  border: none !important;
+  border-radius: var(--radius-md) !important;
+  width: 100%;
+  padding: 14px 18px !important;
+  margin-top: 12px;
+  transition: all 0.3s ease !important;
+  box-shadow: 0 6px 20px var(--accent-secondary-glow) !important;
+  letter-spacing: 0.3px;
+  font-size: 15px !important;
+  position: relative;
+  overflow: hidden;
+}
+
 .update-form .btn:hover {
-  transform: translateY(-3px);
-  background: linear-gradient(135deg, #20c997, #198754);
-  box-shadow: 0 10px 20px rgba(40, 167, 69, 0.4);
+  transform: translateY(-2px) !important;
+  box-shadow: 0 8px 30px var(--accent-secondary-glow) !important;
+  filter: brightness(1.1);
 }
 
-/* 🧊 Active state */
 .update-form .btn:active {
-  transform: translateY(0px);
-  box-shadow: 0 4px 8px rgba(40, 167, 69, 0.25);
+  transform: translateY(0) !important;
 }
 
-/* ✨ Smooth transitions for all elements */
-* {
-  transition: all 0.2s ease-in-out;
+/* Responsive */
+@media (max-width: 480px) {
+  .update-form {
+    padding: 28px 20px;
+    margin: 0 10px;
+  }
+
+  .center-form h1 {
+    font-size: 24px;
+  }
 }

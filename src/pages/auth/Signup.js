@@ -4,9 +4,11 @@ import { auth } from "../../firebaseConfig";
 import { setUser } from "../../utils/auth";
 import { useNavigate, Link } from "react-router-dom";
 import "./Auth.css";
+import Toast from "../../components/Toast";
 
 export default function Signup() {
   const [form, setForm] = useState({ name: "", email: "", password: "" });
+  const [toast, setToast] = useState(null);
   const nav = useNavigate();
 
   const submit = async (e) => {
@@ -16,25 +18,33 @@ export default function Signup() {
     try {
       const cred = await createUserWithEmailAndPassword(auth, email.trim(), password);
       if (name) await updateProfile(cred.user, { displayName: name });
-      setUser(cred.user); // save UID to localStorage
-      alert("Account created successfully!");
-      nav("/"); // redirect to dashboard
+      setUser(cred.user);
+      setToast({ message: "Account created successfully!", type: "success" });
+      setTimeout(() => nav("/"), 1500);
     } catch (err) {
       console.error("Signup Error:", err.message);
       if (err.code === "auth/email-already-in-use") {
-        alert("This email is already registered. Please log in.");
+        setToast({ message: "This email is already registered. Please log in.", type: "warning" });
       } else if (err.code === "auth/invalid-email") {
-        alert("Invalid email format.");
+        setToast({ message: "Invalid email format.", type: "error" });
       } else if (err.code === "auth/weak-password") {
-        alert("Password must be at least 6 characters.");
+        setToast({ message: "Password must be at least 6 characters.", type: "warning" });
       } else {
-        alert("Failed to create account. Please try again.");
+        setToast({ message: "Failed to create account. Please try again.", type: "error" });
       }
     }
   };
 
   return (
     <div className="auth-page">
+      {toast && (
+        <Toast
+          message={toast.message}
+          type={toast.type}
+          onClose={() => setToast(null)}
+        />
+      )}
+
       <div className="auth-card">
         <h2>Create Account 📝</h2>
         <form onSubmit={submit}>
